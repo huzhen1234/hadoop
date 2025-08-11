@@ -1,5 +1,6 @@
 package com.hutu.mapreduce;
 
+import com.hutu.utils.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -14,6 +15,11 @@ public class MyDriver {
     public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
         Configuration conf = new Configuration();
         Job job = Job.getInstance(conf, "word count");
+
+        // 设置作业的输入输出路径
+        String input = "data/wc.data";
+        String output = "data/wc.out";
+        FileUtils.deleFile(conf, output);
         // 设置运行类
         job.setJarByClass(MyDriver.class);
         // 设置mapper和reducer
@@ -28,9 +34,7 @@ public class MyDriver {
         // 可选
         // job.setCombinerClass(IntSumReducer.class);
 
-        // 设置作业的输入输出路径
-        String input = "data/wc.data";
-        String output = "data/wc.out";
+
 
         FileInputFormat.addInputPath(job, new Path(input));
         FileOutputFormat.setOutputPath(job, new Path(output));
