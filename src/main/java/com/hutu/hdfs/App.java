@@ -1,4 +1,4 @@
-package com.hutu;
+package com.hutu.hdfs;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
@@ -16,6 +16,7 @@ public class App {
     public static void main(String[] args) throws URISyntaxException, IOException, InterruptedException {
         Configuration configuration = new Configuration();
         FileSystem fs = FileSystem.get(new URI("hdfs://192.168.1.54:8020"), configuration, "huzhen");
+        // 创建文件夹
         boolean mkdirs = fs.mkdirs(new Path("/huzhen/test"));
         Asserts.check(mkdirs, "创建目录失败");
         // 关闭资源
