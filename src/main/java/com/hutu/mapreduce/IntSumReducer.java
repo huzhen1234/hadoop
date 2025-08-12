@@ -12,6 +12,7 @@ public class IntSumReducer extends Reducer<Text, IntWritable, Text, IntWritable>
     /**
      *
      * @param key 默认是字典排序
+     * <pk,<1,1,1,1>>
      */
     public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
         int sum = 0;
