@@ -39,7 +39,13 @@ public class LiuLiangDriver {
         // 可选
         // job.setCombinerClass(IntSumReducer.class);
 
+        //通过这样就把读取进来了，运转机制是什么呢？
+        // 将输入文件切分为逻辑上的 InputSplit 每个 InputSplit 分配给一个独立的 Mapper
+        // 提供 RecordReader 实现 RecordReader 负责从逻辑 InputSplit 中读取输入记录供 Mapper 处理。 InputSplit交给MapperTask
+        // 一个InputSplit 一个Mapper
+        // 一个MR作业，Mapper阶段的并行度是由InputSplit 的数量来决定的 默认是按照 32MB大小来切割文件的
 
+        // 在HDFS中是按照块的(block)，在mapreduce中是按照 InputSplit(逻辑上) 来分的
         FileInputFormat.addInputPath(job, new Path(input));
         FileOutputFormat.setOutputPath(job, new Path(output));
         // 提交作业
