@@ -51,4 +51,7 @@ public class LiuLiangDriver {
         // 提交作业
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
+
+    // TextInputFormat 是 FileInputFormat的实现类，是一行一行的读的，重写了父类的createRecordReader 和 isSplitable 方法
+    // KeyValueTextInputFormat 是 FileInputFormat的实现类，键值对，重写了父类的createRecordReader 和 isSplitable 方法
 }
