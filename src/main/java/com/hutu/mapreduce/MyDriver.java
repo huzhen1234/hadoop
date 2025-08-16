@@ -35,7 +35,6 @@ public class MyDriver {
         // job.setCombinerClass(IntSumReducer.class);
 
 
-
         FileInputFormat.addInputPath(job, new Path(input));
         FileOutputFormat.setOutputPath(job, new Path(output));
         // 提交作业

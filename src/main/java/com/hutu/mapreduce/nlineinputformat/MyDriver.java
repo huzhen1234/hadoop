@@ -1,4 +1,4 @@
-package com.hutu.mapreduce.keyvalueformat;
+package com.hutu.mapreduce.nlineinputformat;
 
 import com.hutu.mapreduce.TokenizerMapper;
 import com.hutu.utils.FileUtils;
@@ -8,34 +8,34 @@ import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
-import org.apache.hadoop.mapreduce.lib.input.KeyValueLineRecordReader;
-import org.apache.hadoop.mapreduce.lib.input.KeyValueTextInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.NLineInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 import java.io.IOException;
 
-public class KeyValueDriver {
+public class MyDriver {
     public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
         Configuration conf = new Configuration();
-        // 设置keyvalue分隔符，源码里面的配置
-        conf.set(KeyValueLineRecordReader.KEY_VALUE_SEPARATOR,",");
         Job job = Job.getInstance(conf, "word count");
+
         // 设置作业的输入输出路径
-        String input = "data/keyvalueformat.data";
-        String output = "data/keyvalueformat.out";
+        String input = "data/nlformat.data";
+        String output = "data/nlformat.out";
         FileUtils.deleFile(conf, output);
         // 设置运行类
-        job.setJarByClass(KeyValueDriver.class);
+        job.setJarByClass(MyDriver.class);
         // 设置mapper和reducer
-        job.setMapperClass(KeyValueMapper.class);
-        job.setReducerClass(KeyValueReducer.class);
+        job.setMapperClass(NLTokenizerMapper.class);
+        job.setReducerClass(NLIntSumReducer.class);
+        // 设置mapper的输出数据的key和value类型
         job.setMapOutputKeyClass(Text.class);
         job.setMapOutputValueClass(IntWritable.class);
+        // 设置reducer的输出数据的key和value类型
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
-        // 设置了如何读取数据 -- 必须设置，默认的是行读取
-        job.setInputFormatClass(KeyValueTextInputFormat.class);
-        // 设置输入路径
+        // 可选
+        // job.setCombinerClass(IntSumReducer.class);
+        job.setInputFormatClass(NLineInputFormat.class);
         FileInputFormat.addInputPath(job, new Path(input));
         FileOutputFormat.setOutputPath(job, new Path(output));
         // 提交作业
